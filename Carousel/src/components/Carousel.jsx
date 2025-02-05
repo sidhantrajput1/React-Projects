@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import carouselData from "./carouselData";
 
-function Carousel() {
+function Carousel({autoSlide = true , autoSlideInterval = 3000}) {
   const [curr, setCurr] = useState(0);
 
   function prevSlider() {
@@ -13,8 +13,14 @@ function Carousel() {
     setCurr((curr) => (curr === carouselData.length - 1 ? 0 : curr + 1));
   }
 
+  useEffect(() => {
+    if (!autoSlide) return;
+    const slideInterval = setInterval(nextSlider, autoSlideInterval)
+    return () => clearInterval(slideInterval);
+  },[autoSlide, autoSlideInterval, curr])
+
   return (
-    <div className="max-w-7xl mx-auto pt-6 relative">
+    <div className="max-w-[450px] border mx-auto pt-6 relative">
       <div className="overflow-hidden relative p-8">
         <div
           className="flex gap-8 transition-transform ease-out duration-500"
@@ -26,7 +32,6 @@ function Carousel() {
               img={data.imageUrl}
               title={data.title}
               description={data.description}
-              isActive={curr === idx} // Pass whether it's the current slide
             />
           ))}
         </div>
@@ -60,13 +65,9 @@ function Carousel() {
   );
 }
 
-function CarouselContainer({ img, title, description, isActive }) {
+function CarouselContainer({ img, title, description }) {
   return (
-    <div
-      className={`transition-transform ease-in-out duration-500 transform border rounded-lg overflow-hidden shadow-lg 
-      ${isActive ? "scale-105 w-[450px]" : "w-[400px]"} 
-      bg-white p-4`}
-    >
+    <div className="flex-shrink-0 border rounded-lg overflow-hidden shadow-lg w-[400px] bg-white p-4">
       <img className="h-56 w-full object-cover rounded-lg" src={img} alt={title} />
       <div className="mt-4">
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
