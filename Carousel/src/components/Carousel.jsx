@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import carouselData from "./carouselData";
 
-function Carousel({autoSlide = true , autoSlideInterval = 3000}) {
+function Carousel() {
   const [curr, setCurr] = useState(0);
 
+  const previousImage = curr === 0 ? carouselData.length - 1 : curr - 1;
+  const nextImage = curr === carouselData.length - 1 ? 0 : curr + 1;
+
+  const arr = [previousImage, curr, nextImage];
   function prevSlider() {
     setCurr((curr) => (curr === 0 ? carouselData.length - 1 : curr - 1));
   }
@@ -12,28 +16,32 @@ function Carousel({autoSlide = true , autoSlideInterval = 3000}) {
   function nextSlider() {
     setCurr((curr) => (curr === carouselData.length - 1 ? 0 : curr + 1));
   }
-
-  useEffect(() => {
-    if (!autoSlide) return;
-    const slideInterval = setInterval(nextSlider, autoSlideInterval)
-    return () => clearInterval(slideInterval);
-  },[autoSlide, autoSlideInterval, curr])
+  console.log(arr);
+  //   useEffect(() => {
+  //     if (!autoSlide) return;
+  //     const slideInterval = setInterval(nextSlider, autoSlideInterval)
+  //     return () => clearInterval(slideInterval);
+  //   },[autoSlide, autoSlideInterval, curr])
 
   return (
-    <div className="max-w-[450px] border mx-auto pt-6 relative">
+    <div className="max-w-7xl border mx-auto pt-6 relative">
       <div className="overflow-hidden relative p-8">
         <div
-          className="flex gap-8 transition-transform ease-out duration-500"
-          style={{ transform: `translateX(-${curr * 100}%)` }}
+          className="flex gap-8 transition-transform ease-out duration-500000"
+          //   style={{ transform: `translateX(-${curr * 100}%)` }}
         >
-          {carouselData.map((data, idx) => (
-            <CarouselContainer
-              key={idx}
-              img={data.imageUrl}
-              title={data.title}
-              description={data.description}
-            />
-          ))}
+          {arr.map((actualIdx, idx) => {
+            const { imageUrl, title, description } = carouselData[actualIdx];
+            console.log(carouselData[actualIdx]);
+            return (
+              <CarouselContainer
+                key={idx}
+                img={imageUrl}
+                title={title}
+                description={description}
+              />
+            );
+          })}
         </div>
         <div className="absolute inset-0 flex items-center justify-between px-6">
           <button
@@ -68,7 +76,11 @@ function Carousel({autoSlide = true , autoSlideInterval = 3000}) {
 function CarouselContainer({ img, title, description }) {
   return (
     <div className="flex-shrink-0 border rounded-lg overflow-hidden shadow-lg w-[400px] bg-white p-4">
-      <img className="h-56 w-full object-cover rounded-lg" src={img} alt={title} />
+      <img
+        className="h-56 w-full object-cover rounded-lg"
+        src={img}
+        alt={title}
+      />
       <div className="mt-4">
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
         <p className="text-gray-600 mt-2">{description}</p>
