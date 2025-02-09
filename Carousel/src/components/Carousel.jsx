@@ -16,7 +16,7 @@ function Carousel() {
   function nextSlider() {
     setCurr((curr) => (curr === carouselData.length - 1 ? 0 : curr + 1));
   }
-  console.log(arr);
+  // console.log(arr);
   //   useEffect(() => {
   //     if (!autoSlide) return;
   //     const slideInterval = setInterval(nextSlider, autoSlideInterval)
@@ -24,15 +24,15 @@ function Carousel() {
   //   },[autoSlide, autoSlideInterval, curr])
 
   return (
-    <div className="max-w-7xl border mx-auto pt-6 relative">
+    <div className=" border mx-auto pt-6 relative">
       <div className="overflow-hidden relative p-8">
         <div
-          className="flex gap-8 transition-transform ease-out duration-500000"
-          //   style={{ transform: `translateX(-${curr * 100}%)` }}
+          className="flex gap-8 transition ease duration-500"
+            // style={{ transform: `translateX(-${curr * 12}%)` }}
         >
           {arr.map((actualIdx, idx) => {
             const { imageUrl, title, description } = carouselData[actualIdx];
-            console.log(carouselData[actualIdx]);
+            // console.log(carouselData[actualIdx]);
             return (
               <CarouselContainer
                 key={idx}
@@ -62,8 +62,9 @@ function Carousel() {
       <div className="flex justify-center mt-4 space-x-2">
         {carouselData.map((_, idx) => (
           <div
+            onClick={()=>setCurr(idx)}
             key={idx}
-            className={`h-3 w-3 rounded-full ${
+            className={`h-3 w-3 rounded-full cursor-pointer ${
               curr === idx ? "bg-zinc-800" : "bg-zinc-400"
             }`}
           />

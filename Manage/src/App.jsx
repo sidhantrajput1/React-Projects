@@ -1,7 +1,9 @@
 function App() {
   return (
-    <div>
-      
+    <div className="">
+      <nav className="relative container mx-auto p-6">
+        
+      </nav>
     </div>
   )
 }
